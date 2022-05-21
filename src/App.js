@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import { useRef } from "react";
+import {routes} from "./routes";
+import Navbar from "./components/Navbar";
+
 
 function App() {
+  const navBarRef = useRef();
+
+  const closeSlideBar = () => {
+    navBarRef.current.closeSlideBar();
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="bg-gray-50 bg-hero-pattern bg-cover">
+        <Navbar ref={navBarRef} />
+        <div onClick={() => {closeSlideBar()}}>
+          <Routes>
+            {routes.map((route, index) => {
+              return (
+                <Route key={index} path={route.path} exact={route.exact} element={route.component}/>
+              )
+            })}
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 
